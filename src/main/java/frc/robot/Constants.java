@@ -48,6 +48,12 @@ public final class Constants {
     public static final double SPIN_UP_SECONDS = 1;
   }
 
+
+  public static final class ShooterConstants {
+    // Something
+    public static final int SHOOTER_MOTOR_ID = 0;
+  }
+
   public static final class OperatorConstants {
     // Port constants for driver and operator controllers. These should match the
     // values in the Joystick tab of the Driver Station software
