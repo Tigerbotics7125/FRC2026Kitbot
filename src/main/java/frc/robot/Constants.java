@@ -49,10 +49,15 @@ public final class Constants {
     public static final double SPIN_UP_SECONDS = 1;
   }
 
-
   public static final class ShooterConstants {
     // Something
     public static final int SHOOTER_MOTOR_ID = 0;
+
+    // Current limit and nominal voltage for shooter motors
+    public static final int SHOOTER_MOTOR_CURRENT_LIMIT = 0;
+
+    // Voltage values for shooting operations
+    public static final double SHOOTER_VOLTAGE = 0;
   }
 
   public static final class OperatorConstants {
