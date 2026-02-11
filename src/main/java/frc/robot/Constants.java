@@ -50,13 +50,14 @@ public final class Constants {
 
   public static final class ShooterConstants {
     // Something
-    public static final int SHOOTER_MOTOR_ID = 0;
+    public static final int SHOOTER_Motor_ID = 10;
+    public static final int SHOOTER_MotorFollow_ID = 11;
 
     // Current limit and nominal voltage for shooter motors
-    public static final int SHOOTER_MOTOR_CURRENT_LIMIT = 0;
+    public static final int SHOOTER_MOTOR_CURRENT_LIMIT = 40;
 
     // Voltage values for shooting operations
-    public static final double SHOOTER_VOLTAGE = 0;
+    public static final double SHOOTER_VOLTAGE = -8;
   }
 
   public static final class OperatorConstants {
