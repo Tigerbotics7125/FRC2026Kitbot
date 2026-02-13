@@ -51,4 +51,8 @@ public class CANShooterSubsystem extends SubsystemBase {
     public void stop() {
     shooter.set(0);
   }
+
+  @Override
+  public void periodic() {
+  }
 }
