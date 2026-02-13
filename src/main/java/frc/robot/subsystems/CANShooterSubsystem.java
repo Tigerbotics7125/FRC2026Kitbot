@@ -41,11 +41,11 @@ public class CANShooterSubsystem extends SubsystemBase {
     }
 
     public Command shootCommand() {
-        return this.run(() -> shoot());
+        return this.run(() -> shoot(1));
   }
 
-    public void shoot() {
-        shooter.setVoltage(SmartDashboard.getNumber("Shooter value", SHOOTER_VOLTAGE));
+    public void shoot(double speed) {
+        shooter.setVoltage(SmartDashboard.getNumber("Shooter value", SHOOTER_VOLTAGE)*speed);
     }
 
     public void stop() {

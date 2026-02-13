@@ -78,9 +78,9 @@ public class RobotContainer {
     // the intake
     driverController.a()
         .whileTrue(ballSubsystem.runEnd(() -> ballSubsystem.eject(), () -> ballSubsystem.stop()));
-
-        driverController.x()
-        .whileTrue(shooterSubsystem.runEnd(() -> shooterSubsystem.shoot(), () -> shooterSubsystem.stop()));
+    // While the left triggerk is held on the operator controller, shoot balls from the hopper
+        driverController.leftTrigger()
+        .whileTrue(shooterSubsystem.runEnd(() -> shooterSubsystem.shoot(driverController.getLeftTriggerAxis()), () -> shooterSubsystem.stop()));
 
     // Set the default command for the drive subsystem to the command provided by
     // factory with the values provided by the joystick axes on the driver
