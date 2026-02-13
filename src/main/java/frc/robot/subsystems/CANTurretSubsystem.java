@@ -18,9 +18,21 @@ public class CANTurretSubsystem extends SubsystemBase {
         turretTurner = new SparkMax(TURRET_MOTOR_ID, MotorType.kBrushed);
         turretEncoder = new SparkMax(TURRET_ENCODER_MOTOR_ID, MotorType.kBrushed);
         absoluteEncoder = turretEncoder.getAbsoluteEncoder();
-        SmartDashboard.putNumber("Spin-up feeder roller value", SPIN_UP_FEEDER_VOLTAGE);
+        SmartDashboard.putNumber("Turret encoder value", absoluteEncoder.getPosition());
     }
+// A method to stop the rollers
+  public void stop() {
+    turretTurner.set(0);
+    
+  }
 
+  // A method to spin up the launcher roller while spinning the feeder roller to
+  // push Fuel away from the launcher
+  public void spinUp() {
+    turretTurner
+        .setVoltage(SmartDashboard.getNumber("Spin-up feeder roller value", SPIN_UP_FEEDER_VOLTAGE));
+    
+  }
     @Override
     public void periodic() {
         // This method will be called once per scheduler run
