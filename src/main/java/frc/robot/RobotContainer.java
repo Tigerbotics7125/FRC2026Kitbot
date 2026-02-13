@@ -80,7 +80,7 @@ public class RobotContainer {
         .whileTrue(ballSubsystem.runEnd(() -> ballSubsystem.eject(), () -> ballSubsystem.stop()));
 
         driverController.x()
-        .whileTrue(shooterSubsystem.runEnd(() -> shooterSubsystem.shootCommand(), () -> shooterSubsystem.stop()));
+        .whileTrue(shooterSubsystem.runEnd(() -> shooterSubsystem.shoot(), () -> shooterSubsystem.stop()));
 
     // Set the default command for the drive subsystem to the command provided by
     // factory with the values provided by the joystick axes on the driver
