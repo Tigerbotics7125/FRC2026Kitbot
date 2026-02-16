@@ -25,6 +25,12 @@ public final class Constants {
     // Current limit for drivetrain motors. 60A is a reasonable maximum to reduce
     // likelihood of tripping breakers or damaging CIM motors
     public static final int DRIVE_MOTOR_CURRENT_LIMIT = 60;
+    
+    public enum ControlType {
+      ARCADE,
+      ARCADE_ROCKETLEAGUE,
+      TANK;
+    }
   }
 
   public static final class FuelConstants {
@@ -59,6 +65,7 @@ public final class Constants {
     // Voltage values for shooting operations
     public static final double SHOOTER_VOLTAGE = 0;
   }
+
 
   public static final class OperatorConstants {
     // Port constants for driver and operator controllers. These should match the

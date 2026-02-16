@@ -5,12 +5,20 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 import static frc.robot.Constants.OperatorConstants.*;
+
+import java.util.Map;
+
 import static frc.robot.Constants.FuelConstants.*;
+
+import frc.robot.Constants.DriveConstants;
+import frc.robot.Constants.DriveConstants.ControlType;
 import frc.robot.commands.Autos;
 import frc.robot.subsystems.CANDriveSubsystem;
 import frc.robot.subsystems.CANFuelSubsystem;
@@ -38,6 +46,7 @@ public class RobotContainer {
 
   // The autonomous chooser
   private final SendableChooser<Command> autoChooser = new SendableChooser<>();
+  private final SendableChooser<Constants.DriveConstants.ControlType> driveChooser = new SendableChooser<>();
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -49,6 +58,12 @@ public class RobotContainer {
     // add additional auto modes you can add additional lines here with
     // autoChooser.addOption
     autoChooser.setDefaultOption("Autonomous", Autos.exampleAuto(driveSubsystem, ballSubsystem));
+    driveChooser.setDefaultOption(DriveConstants.ControlType.TANK.name(), DriveConstants.ControlType.TANK);
+    for (ControlType controlType : ControlType.values()) {
+      if (controlType.equals(ControlType.TANK))
+        continue;
+      driveChooser.addOption(controlType.name(), controlType);
+    }
   }
 
   /**
@@ -85,11 +100,18 @@ public class RobotContainer {
     // value). The X-axis is also inverted so a positive value (stick to the right)
     // results in clockwise rotation (front of the robot turning right). Both axes
     // are also scaled down so the rotation is more easily controllable.
+    SmartDashboard.putData("ControlType", driveChooser);
     driveSubsystem.setDefaultCommand(
-        // driveSubsystem.driveArcade(
-        // () -> -driverController.getLeftY() * DRIVE_SCALING,
-        // () -> -driverController.getRightX() * ROTATION_SCALING));
-        driveSubsystem.driveTank(() -> driverController.getLeftY(), () -> driverController.getRightY()));
+        Commands.select(
+            Map.of(
+                ControlType.ARCADE,
+                driveSubsystem.driveArcade(
+                    () -> -driverController.getLeftY() * DRIVE_SCALING,
+                    () -> -driverController.getRightX() * ROTATION_SCALING),
+                ControlType.TANK,
+                driveSubsystem.driveTank(() -> driverController.getLeftY(),
+                    () -> driverController.getRightY())),
+            driveChooser::getSelected));
   }
 
   /**
