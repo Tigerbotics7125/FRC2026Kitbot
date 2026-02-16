@@ -32,8 +32,9 @@ public class RobotContainer {
       DRIVER_CONTROLLER_PORT);
 
   // The operator's controller
-  //private final CommandXboxController operatorController = new CommandXboxController(
-     // OPERATOR_CONTROLLER_PORT);
+  // private final CommandXboxController operatorController = new
+  // CommandXboxController(
+  // OPERATOR_CONTROLLER_PORT);
 
   // The autonomous chooser
   private final SendableChooser<Command> autoChooser = new SendableChooser<>();
@@ -85,9 +86,10 @@ public class RobotContainer {
     // results in clockwise rotation (front of the robot turning right). Both axes
     // are also scaled down so the rotation is more easily controllable.
     driveSubsystem.setDefaultCommand(
-        driveSubsystem.driveArcade(
-            () -> -driverController.getLeftY() * DRIVE_SCALING,
-            () -> -driverController.getRightX() * ROTATION_SCALING));
+        // driveSubsystem.driveArcade(
+        // () -> -driverController.getLeftY() * DRIVE_SCALING,
+        // () -> -driverController.getRightX() * ROTATION_SCALING));
+        driveSubsystem.driveTank(() -> driverController.getLeftY(), () -> driverController.getRightY()));
   }
 
   /**
