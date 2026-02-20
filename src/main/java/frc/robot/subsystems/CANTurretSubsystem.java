@@ -2,23 +2,23 @@ package frc.robot.subsystems;
 
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.AbsoluteEncoder;
+import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkMax;
 
+import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import static frc.robot.Constants.FuelConstants.*;
 
 public class CANTurretSubsystem extends SubsystemBase {
     private final SparkMax turretTurner;
-    private final SparkMax turretEncoder;
-    private final AbsoluteEncoder absoluteEncoder;
+    private final RelativeEncoder relEnc;
 
     public CANTurretSubsystem() {
         // create brushed motor
         turretTurner = new SparkMax(TURRET_MOTOR_ID, MotorType.kBrushed);
-        turretEncoder = new SparkMax(TURRET_ENCODER_MOTOR_ID, MotorType.kBrushed);
-        absoluteEncoder = turretEncoder.getAbsoluteEncoder();
-        SmartDashboard.putNumber("Turret encoder value", absoluteEncoder.getPosition());
+        relEnc=turretTurner.getEncoder();
+        SmartDashboard.putNumber("Turret encoder value", relEnc.getPosition());
     }
 // A method to stop the rollers
   public void stop() {
