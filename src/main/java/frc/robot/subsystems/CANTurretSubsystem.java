@@ -18,7 +18,7 @@ public class CANTurretSubsystem extends SubsystemBase {
         turretTurner = new SparkMax(TURRET_MOTOR_ID, MotorType.kBrushed);
         turretEncoder = new SparkMax(TURRET_ENCODER_MOTOR_ID, MotorType.kBrushed);
         absoluteEncoder = turretEncoder.getAbsoluteEncoder();
-        SmartDashboard.putNumber("Spin-up feeder roller value", SPIN_UP_FEEDER_VOLTAGE);
+        //SmartDashboard.putNumber("Spin-up feeder roller value", SPIN_UP_FEEDER_VOLTAGE);
     }
 
     @Override
