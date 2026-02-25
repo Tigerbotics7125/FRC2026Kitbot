@@ -5,8 +5,11 @@ import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.spark.SparkMax;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import static frc.robot.Constants.FuelConstants.*;
+
+import java.util.function.DoubleSupplier;
 
 public class CANTurretSubsystem extends SubsystemBase {
     private final SparkMax turretTurner;
@@ -35,5 +38,8 @@ public class CANTurretSubsystem extends SubsystemBase {
 
     public void setSpeed(double leftX) {
         turretTurner.setVoltage(leftX);
+    }
+    public Command rotate(DoubleSupplier speed) {
+        return this.run(() -> setSpeed(speed.getAsDouble()));
     }
 }

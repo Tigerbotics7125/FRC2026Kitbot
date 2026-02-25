@@ -106,6 +106,9 @@ public class RobotContainer {
         driveSubsystem.driveTank(
             () -> driverController.getLeftY(),
             () -> driverController.getRightY()));
+    turretSubsystem.setDefaultCommand(
+      turretSubsystem.rotate(
+        () -> operatorController.getLeftX()));
   }
 
   /**

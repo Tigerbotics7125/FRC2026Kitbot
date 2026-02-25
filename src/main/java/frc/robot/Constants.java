@@ -78,5 +78,7 @@ public final class Constants {
     // help avoid driving and turning too fast and being difficult to control
     public static final double DRIVE_SCALING = .7;
     public static final double ROTATION_SCALING = .8;
+    public static final double TURRET_SCALING = .7;
+
   }
 }
