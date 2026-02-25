@@ -87,8 +87,7 @@ public class RobotContainer {
     // the intake
     operatorController.a()
         .whileTrue(ballSubsystem.runEnd(() -> ballSubsystem.eject(), () -> ballSubsystem.stop()));
-    operatorController.leftStick()
-      .whileTrue(turretSubsystem.runEnd(() -> turretSubsystem.setSpeed(operatorController.getLeftX()), () -> turretSubsystem.stop()));
+
     // Set the default command for the drive subsystem to the command provided by
     // factory with the values provided by the joystick axes on the driver
     // controller. The Y axis of the controller is inverted so that pushing the
@@ -101,6 +100,9 @@ public class RobotContainer {
         driveSubsystem.driveTank(
             () -> driverController.getLeftY(),
             () -> driverController.getRightY()));
+    turretSubsystem.setDefaultCommand(
+      turretSubsystem.rotate(
+        () -> operatorController.getLeftX()));
   }
 
   /**
