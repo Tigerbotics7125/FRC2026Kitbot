@@ -17,6 +17,7 @@ import frc.robot.commands.Autos;
 import frc.robot.subsystems.CANDriveSubsystem;
 import frc.robot.subsystems.CANFuelSubsystem;
 import frc.robot.subsystems.CANShooterSubsystem;
+import frc.robot.subsystems.CANTurretSubsystem;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -30,6 +31,7 @@ public class RobotContainer {
   private final CANDriveSubsystem driveSubsystem = new CANDriveSubsystem();
   private final CANFuelSubsystem ballSubsystem = new CANFuelSubsystem();
   private final CANShooterSubsystem shooterSubsystem = new CANShooterSubsystem();
+  private final CANTurretSubsystem turretSubsystem = new CANTurretSubsystem();
 
   // The driver's controller
   private final CommandXboxController driverController = new CommandXboxController(
@@ -90,7 +92,8 @@ public class RobotContainer {
     // While the left triggerk is held on the operator controller, shoot balls from the hopper
         driverController.leftTrigger()
         .whileTrue(shooterSubsystem.runEnd(() -> shooterSubsystem.shoot(driverController.getLeftTriggerAxis()), () -> shooterSubsystem.stop()));
-
+    operatorController.leftStick()
+      .whileTrue(turretSubsystem.runEnd(() -> turretSubsystem.setSpeed(operatorController.getLeftX()), () -> turretSubsystem.stop()));
     // Set the default command for the drive subsystem to the command provided by
     // factory with the values provided by the joystick axes on the driver
     // controller. The Y axis of the controller is inverted so that pushing the
