@@ -97,8 +97,6 @@ public class RobotContainer {
     // While the left triggerk is held on the operator controller, shoot balls from the hopper
         driverController.leftTrigger()
         .whileTrue(shooterSubsystem.runEnd(() -> shooterSubsystem.shoot(driverController.getLeftTriggerAxis()), () -> shooterSubsystem.stop()));
-    operatorController.leftStick()
-      .whileTrue(turretSubsystem.runEnd(() -> turretSubsystem.setSpeed(operatorController.getLeftX()), () -> turretSubsystem.stop()));
     // Set the default command for the drive subsystem to the command provided by
     // factory with the values provided by the joystick axes on the driver
     // controller. The Y axis of the controller is inverted so that pushing the
