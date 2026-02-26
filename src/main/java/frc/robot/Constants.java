@@ -84,8 +84,13 @@ public final class Constants {
     public static final int TURRET_ENCODER_MOTOR_ID = 9;
     public static final int TURRET_MOTOR_CURRENT_LIMIT = 40;
     public static final double TURRET_SCALING = .7;
-    public static final double kP=0;
-    public static final double kI=0;
-    public static final double kD=0;
+    public static final double turret_kP=5e-5;
+    public static final double turret_kI=1e-6;
+    public static final double turret_kD=0;
+    public static final double turret_kIz = 0; 
+    public static final double turret_kFF = 0.000156; 
+    public static final double turret_kMaxOutput = 1; 
+    public static final double turret_kMinOutput = -1;
+    public static final double turret_maxRPM = 5700;
   }
 }
