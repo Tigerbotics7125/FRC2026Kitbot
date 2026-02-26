@@ -37,13 +37,11 @@ public final class Constants {
     // Motor controller IDs for Fuel Mechanism motors
     public static final int FEEDER_MOTOR_ID = 1;
     public static final int INTAKE_LAUNCHER_MOTOR_ID = 2;
-    public static final int TURRET_MOTOR_ID = 8;
-    public static final int TURRET_ENCODER_MOTOR_ID = 9;
 
     // Current limit and nominal voltage for fuel mechanism motors.
     public static final int FEEDER_MOTOR_CURRENT_LIMIT = 40;
     public static final int LAUNCHER_MOTOR_CURRENT_LIMIT = 40;
-
+    
     // Voltage values for various fuel operations. These values may need to be tuned
     // based on exact robot construction.
     // See the Software Guide for tuning information
@@ -54,7 +52,7 @@ public final class Constants {
     public static final double SPIN_UP_FEEDER_VOLTAGE = 6;
     public static final double SPIN_UP_SECONDS = 1;
   }
-
+  
   public static final class ShooterConstants {
     // Something
     public static final int SHOOTER_Motor_ID = 10;
@@ -78,7 +76,16 @@ public final class Constants {
     // help avoid driving and turning too fast and being difficult to control
     public static final double DRIVE_SCALING = .7;
     public static final double ROTATION_SCALING = .8;
-    public static final double TURRET_SCALING = .7;
+    
+  }
 
+  public static final class TurretConstants {
+    public static final int TURRET_MOTOR_ID = 8;
+    public static final int TURRET_ENCODER_MOTOR_ID = 9;
+    public static final int TURRET_MOTOR_CURRENT_LIMIT = 40;
+    public static final double TURRET_SCALING = .7;
+    public static final double kP=0;
+    public static final double kI=0;
+    public static final double kD=0;
   }
 }
