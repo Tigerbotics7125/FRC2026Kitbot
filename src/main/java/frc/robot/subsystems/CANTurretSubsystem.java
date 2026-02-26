@@ -23,15 +23,14 @@ public class CANTurretSubsystem extends SubsystemBase {
     // private final SparkMax turretEncoder;
     private final RelativeEncoder relativeEncoder;
     private final SparkClosedLoopController turretController;
-
+    //private double goal;
     public CANTurretSubsystem() {
         // create brushed motor
-        turretTurner = new SparkMax(TURRET_MOTOR_ID, MotorType.kBrushed);
+        turretTurner = new SparkMax(TURRET_MOTOR_ID, MotorType.kBrushless);
         // turretEncoder = new SparkMax(TURRET_ENCODER_MOTOR_ID, MotorType.kBrushed);
         relativeEncoder = turretTurner.getEncoder();
         turretController = turretTurner.getClosedLoopController();
-        // SmartDashboard.putNumber("Spin-up feeder roller value",
-        // SPIN_UP_FEEDER_VOLTAGE);
+        //goal=0;
         SparkMaxConfig config = new SparkMaxConfig();
         config
         .voltageCompensation(12)
@@ -43,22 +42,25 @@ public class CANTurretSubsystem extends SubsystemBase {
 
     // A method to stop the turret
     public void stop() {
-        turretTurner.set(0);
+       // turretTurner.set(0);
     }
 
     @Override
     public void periodic() {
         // This method will be called once per scheduler run
+       // SmartDashboard.putNumber("Turret Goal Position",turretController.getSetpoint());
+       // SmartDashboard.putNumber("Turret Current Position",relativeEncoder.getPosition());
     }
 
     public void setPosition(double angle) {
-        double goal=(50.0/180.0)*angle;
+        double goal=50.0*angle;
+        //goal=25;
         turretController.setSetpoint(goal,ControlType.kPosition);
 //        turretTurner.setVoltage(leftX);
     }
 
     public Command rotate(DoubleSupplier angle) {
-        double rotationAngle = angle.getAsDouble() * 90 + 90;
-        return this.run(() -> setPosition(rotationAngle));
+        //double rotationAngle = angle.getAsDouble() * 90 + 90;
+        return this.run(() -> setPosition(angle.getAsDouble()));
     }
 }
