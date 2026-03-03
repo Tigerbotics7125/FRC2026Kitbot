@@ -33,7 +33,7 @@ public class CANShooterSubsystem extends SubsystemBase {
         SparkMaxConfig shooterConfig = new SparkMaxConfig();
         shooterConfig.smartCurrentLimit(SHOOTER_MOTOR_CURRENT_LIMIT);
         shooter.configure(shooterConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-        shooterConfig.follow(shooter);
+        shooterConfig.follow(shooter,true);
         shooterFollow.configure(shooterConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     }
 

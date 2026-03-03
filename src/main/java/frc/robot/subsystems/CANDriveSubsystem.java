@@ -81,6 +81,6 @@ public class CANDriveSubsystem extends SubsystemBase {
   }
   
   public Command driveTank(DoubleSupplier lSpeed, DoubleSupplier rSpeed) {
-    return this.run(() -> drive.tankDrive(lSpeed.getAsDouble(), rSpeed.getAsDouble()));
+    return this.run(() -> drive.tankDrive(lSpeed.getAsDouble(), rSpeed.getAsDouble(),true));
   }
 }

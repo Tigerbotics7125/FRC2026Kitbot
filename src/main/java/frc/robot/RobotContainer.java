@@ -94,9 +94,11 @@ public class RobotContainer {
     // the intake
     operatorController.a()
         .whileTrue(ballSubsystem.runEnd(() -> ballSubsystem.eject(), () -> ballSubsystem.stop()));
-    // While the left triggerk is held on the operator controller, shoot balls from the hopper
-        driverController.leftTrigger()
-        .whileTrue(shooterSubsystem.runEnd(() -> shooterSubsystem.shoot(driverController.getLeftTriggerAxis()), () -> shooterSubsystem.stop()));
+    // While the left triggerk is held on the operator controller, shoot balls from
+    // the hopper
+    operatorController.leftTrigger()
+        .whileTrue(shooterSubsystem.runEnd(() -> shooterSubsystem.shoot(operatorController.getLeftTriggerAxis()),
+            () -> shooterSubsystem.stop()));
     // Set the default command for the drive subsystem to the command provided by
     // factory with the values provided by the joystick axes on the driver
     // controller. The Y axis of the controller is inverted so that pushing the
@@ -112,7 +114,7 @@ public class RobotContainer {
     turretSubsystem.setDefaultCommand(
         turretSubsystem.rotate(
             () -> operatorController.getLeftX()));
-   
+
   }
 
   /**
@@ -125,7 +127,7 @@ public class RobotContainer {
     return autoChooser.getSelected();
   }
 
-  public CommandXboxController getOperator(){
+  public CommandXboxController getOperator() {
     return operatorController;
   }
 }

@@ -53,7 +53,7 @@ public class CANTurretSubsystem extends SubsystemBase {
     }
 
     public void setPosition(double angle) {
-        double goal=50.0*angle;
+        double goal=25.0*angle;
         //goal=25;
         turretController.setSetpoint(goal,ControlType.kPosition);
 //        turretTurner.setVoltage(leftX);
