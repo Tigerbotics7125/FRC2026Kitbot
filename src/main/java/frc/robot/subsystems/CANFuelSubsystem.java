@@ -15,16 +15,20 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import static frc.robot.Constants.FuelConstants.*;
 
+import java.util.function.DoubleSupplier;
+import java.util.function.Supplier;
+
 public class CANFuelSubsystem extends SubsystemBase {
   private final SparkMax feederRoller;
   private final SparkMax intakeLauncherRoller;
+  private final CANShooterSubsystem shooter;
 
   /** Creates a new CANBallSubsystem. */
   public CANFuelSubsystem() {
     // create brushed motors for each of the motors on the launcher mechanism
     intakeLauncherRoller = new SparkMax(INTAKE_LAUNCHER_MOTOR_ID, MotorType.kBrushless);
     feederRoller = new SparkMax(FEEDER_MOTOR_ID, MotorType.kBrushless);
-
+    shooter=new CANShooterSubsystem();
     // put default values for various fuel operations onto the dashboard
     // all methods in this subsystem pull their values from the dashbaord to allow
     // you to tune the values easily, and then replace the values in Constants.java
@@ -68,16 +72,19 @@ public class CANFuelSubsystem extends SubsystemBase {
   }
 
   // A method to set the rollers to values for launching.
-  public void launch() {
+  public void launch(double speed) {
+    SmartDashboard.putNumber("launch speed", speed);
     feederRoller.setVoltage(SmartDashboard.getNumber("Launching feeder roller value", LAUNCHING_FEEDER_VOLTAGE));
     intakeLauncherRoller
         .setVoltage(SmartDashboard.getNumber("Launching launcher roller value", LAUNCHING_LAUNCHER_VOLTAGE));
+    shooter.shoot(speed);
   }
 
   // A method to stop the rollers
   public void stop() {
     feederRoller.set(0);
     intakeLauncherRoller.set(0);
+    shooter.stop();
   }
 
   // A method to spin up the launcher roller while spinning the feeder roller to
@@ -87,18 +94,20 @@ public class CANFuelSubsystem extends SubsystemBase {
         .setVoltage(SmartDashboard.getNumber("Spin-up feeder roller value", SPIN_UP_FEEDER_VOLTAGE));
     intakeLauncherRoller
         .setVoltage(SmartDashboard.getNumber("Launching launcher roller value", LAUNCHING_LAUNCHER_VOLTAGE));
+    shooter.shoot(0);
   }
 
   // A command factory to turn the spinUp method into a command that requires this
   // subsystem
   public Command spinUpCommand() {
+    System.out.println("hi");
     return this.run(() -> spinUp());
   }
 
   // A command factory to turn the launch method into a command that requires this
   // subsystem
-  public Command launchCommand() {
-    return this.run(() -> launch());
+  public Command launchCommand(DoubleSupplier speed) {
+    return this.run(() -> launch(speed.getAsDouble()));
   }
 
   @Override

@@ -42,7 +42,9 @@ public class CANShooterSubsystem extends SubsystemBase {
   }
 
     public void shoot(double speed) {
-        shooter.setVoltage(SmartDashboard.getNumber("Shooter value", SHOOTER_VOLTAGE)*speed);
+        double adjustedSpeed=SmartDashboard.getNumber("Shooter value", SHOOTER_VOLTAGE)+(-4)*(speed)*(speed);
+        SmartDashboard.putNumber("Adjusted shooted speed:", adjustedSpeed);
+        shooter.setVoltage(SmartDashboard.getNumber("Shooter value", SHOOTER_VOLTAGE)+(-4)*(speed)*(speed));
     }
 
     public void stop() {

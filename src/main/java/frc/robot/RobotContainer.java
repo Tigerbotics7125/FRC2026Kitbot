@@ -31,7 +31,7 @@ public class RobotContainer {
   // The robot's subsystems
   private final CANDriveSubsystem driveSubsystem = new CANDriveSubsystem();
   private final CANFuelSubsystem ballSubsystem = new CANFuelSubsystem();
-  private final CANShooterSubsystem shooterSubsystem = new CANShooterSubsystem();
+  //private final CANShooterSubsystem shooterSubsystem = new CANShooterSubsystem();
   private final CANTurretSubsystem turretSubsystem = new CANTurretSubsystem();
 
   // The driver's controller
@@ -88,17 +88,17 @@ public class RobotContainer {
     // second, then launch fuel. When the button is released, stop.
     operatorController.rightBumper()
         .whileTrue(ballSubsystem.spinUpCommand().withTimeout(SPIN_UP_SECONDS)
-            .andThen(ballSubsystem.launchCommand())
+            .andThen(ballSubsystem.launchCommand(()->operatorController.getLeftTriggerAxis()))
             .finallyDo(() -> ballSubsystem.stop()));
     // While the A button is held on the operator controller, eject fuel back out
     // the intake
     operatorController.a()
         .whileTrue(ballSubsystem.runEnd(() -> ballSubsystem.eject(), () -> ballSubsystem.stop()));
-    // While the left triggerk is held on the operator controller, shoot balls from
+    // While the left trigger is held on the operator controller, shoot balls from
     // the hopper
-    operatorController.leftTrigger()
-        .whileTrue(shooterSubsystem.runEnd(() -> shooterSubsystem.shoot(operatorController.getLeftTriggerAxis()),
-            () -> shooterSubsystem.stop()));
+    //operatorController.leftTrigger()
+    //    .whileTrue(shooterSubsystem.runEnd(() -> shooterSubsystem.shoot(operatorController.getLeftTriggerAxis()),
+    //        () -> shooterSubsystem.stop()));
     // Set the default command for the drive subsystem to the command provided by
     // factory with the values provided by the joystick axes on the driver
     // controller. The Y axis of the controller is inverted so that pushing the
