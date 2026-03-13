@@ -109,8 +109,8 @@ public class RobotContainer {
     // SmartDashboard.putData("ControlType", driveChooser);
     driveSubsystem.setDefaultCommand(
         driveSubsystem.driveTank(
-            () -> driverController.getLeftY(),
-            () -> driverController.getRightY()));
+            () -> driverController.getLeftY()*DRIVE_SCALING,
+            () -> driverController.getRightY()*DRIVE_SCALING));
     turretSubsystem.setDefaultCommand(
         turretSubsystem.rotate(
             () -> operatorController.getLeftX()));
