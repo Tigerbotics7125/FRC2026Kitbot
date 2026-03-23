@@ -11,7 +11,11 @@ import com.revrobotics.ResetMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkMaxConfig;
+import com.studica.frc.AHRS;
+import com.studica.frc.AHRS.NavXComType;
 
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -25,6 +29,8 @@ public class CANDriveSubsystem extends SubsystemBase {
   private final SparkMax rightFollower;
 
   private final DifferentialDrive drive;
+
+  private final AHRS ahrs;
 
   public CANDriveSubsystem() {
     // create brushed motors for drive
@@ -68,6 +74,14 @@ public class CANDriveSubsystem extends SubsystemBase {
     // so that postive values drive both sides forward
     config.inverted(true);
     leftLeader.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    try {
+          /* Communicate w/navX-MXP via the MXP SPI Bus.                                     */
+          /* Alternatively:  I2C.Port.kMXP, SerialPort.Port.kMXP or SerialPort.Port.kUSB     */
+          /* See http://navx-mxp.kauailabs.com/guidance/selecting-an-interface/ for details. */
+          ahrs = new AHRS(NavXComType.kMXP_SPI); 
+      } catch (RuntimeException ex ) {
+          DriverStation.reportError("Error instantiating navX-MXP:  " + ex.getMessage(), true);
+      }
   }
 
   @Override
