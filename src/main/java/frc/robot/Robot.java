@@ -65,7 +65,6 @@ public class Robot extends TimedRobot {
     // robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
-    SmartDashboard.putNumber("Left Stick X", m_robotContainer.getOperator().getLeftX());
   }
 
   /** This function is called once each time the robot enters Disabled mode. */

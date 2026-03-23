@@ -19,6 +19,7 @@ import frc.robot.subsystems.CANDriveSubsystem;
 import frc.robot.subsystems.CANFuelSubsystem;
 import frc.robot.subsystems.CANShooterSubsystem;
 import frc.robot.subsystems.CANTurretSubsystem;
+import frc.robot.subsystems.VisionSubsystem;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -47,6 +48,8 @@ public class RobotContainer {
   // private final SendableChooser<Constants.DriveConstants.ControlType>
   // driveChooser = new SendableChooser<>();
 
+  private final VisionSubsystem driveVision=new VisionSubsystem(driveSubsystem::addVisionMeasurement);
+  
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
