@@ -8,12 +8,14 @@ import java.util.function.DoubleSupplier;
 
 import com.revrobotics.PersistMode;
 import com.revrobotics.ResetMode;
+import com.revrobotics.sim.SparkMaxSim;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import com.studica.frc.AHRS;
 import com.studica.frc.AHRS.NavXComType;
 
+import edu.wpi.first.hal.SimDevice;
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.estimator.DifferentialDrivePoseEstimator;
@@ -21,10 +23,17 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.math.numbers.N1;
+import edu.wpi.first.math.numbers.N2;
 import edu.wpi.first.math.numbers.N3;
+import edu.wpi.first.math.system.LinearSystem;
+import edu.wpi.first.math.system.plant.DCMotor;
+import edu.wpi.first.math.system.plant.LinearSystemId;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.simulation.AnalogGyroSim;
+import edu.wpi.first.wpilibj.simulation.DifferentialDrivetrainSim;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import static frc.robot.Constants.DriveConstants.*;
@@ -35,11 +44,18 @@ public class CANDriveSubsystem extends SubsystemBase {
   private final SparkMax rightLeader;
   private final SparkMax rightFollower;
 
+  private final SparkMaxSim leftSim;
+  private final SparkMaxSim rightSim;
+
   private final DifferentialDrive drive;
   private final DifferentialDrivePoseEstimator dPoseEst;
   private final DifferentialDriveKinematics driveKinematics;
 
-  private AHRS ahrs;
+  private final DifferentialDrivetrainSim drivetrainSim;
+
+  private AHRS navX;
+
+  private final AnalogGyro m_gyro = new AnalogGyro(0);
 
   public CANDriveSubsystem() {
     // create brushed motors for drive
@@ -48,9 +64,28 @@ public class CANDriveSubsystem extends SubsystemBase {
     rightLeader = new SparkMax(RIGHT_LEADER_ID, MotorType.kBrushless);
     rightFollower = new SparkMax(RIGHT_FOLLOWER_ID, MotorType.kBrushless);
 
+    // Simulation stuff
+    DCMotor leftGearbox = DCMotor.getNEO(2);
+    DCMotor rightGearbox = DCMotor.getNEO(2);
+    leftSim = new SparkMaxSim(leftLeader, leftGearbox);
+    rightSim = new SparkMaxSim(rightLeader, rightGearbox);
+
     // set up differential drive class
+    double trackwidthMeters = Units.inchesToMeters(21.651);
     drive = new DifferentialDrive(leftLeader, rightLeader);
-    driveKinematics = new DifferentialDriveKinematics(Units.inchesToMeters(21.651));
+    driveKinematics = new DifferentialDriveKinematics(trackwidthMeters);
+
+    // simulation stuff
+    LinearSystem<N2, N2, N2> drivetrainSystem = LinearSystemId.identifyDrivetrainSystem(2.0, 0.5, 2.25, 0.3,
+        trackwidthMeters);
+    drivetrainSim = new DifferentialDrivetrainSim(
+        drivetrainSystem,
+        DCMotor.getNEO(2),
+        8.46,
+        trackwidthMeters,
+        Units.inchesToMeters(6.0 / 2.0),
+        null);
+
     // Set can timeout. Because this project only sets parameters once on
     // construction, the timeout can be long without blocking robot operation. Code
     // which sets or gets parameters during operation may need a shorter timeout.
@@ -96,14 +131,16 @@ public class CANDriveSubsystem extends SubsystemBase {
        * See http://navx-mxp.kauailabs.com/guidance/selecting-an-interface/ for
        * details.
        */
-      ahrs = new AHRS(NavXComType.kMXP_SPI);
+      navX = new AHRS(NavXComType.kMXP_SPI);
     } catch (RuntimeException ex) {
       DriverStation.reportError("Error instantiating navX-MXP:  " + ex.getMessage(), true);
     }
 
+    //Simulation
+    //simNavX=new SimDevice(DRIVE_MOTOR_CURRENT_LIMIT)
     dPoseEst = new DifferentialDrivePoseEstimator(
         driveKinematics,
-        ahrs.getRotation2d(),
+        navX.getRotation2d(),
         leftLeader.getEncoder().getPosition(),
         rightLeader.getEncoder().getPosition(),
         new Pose2d(),
@@ -114,9 +151,16 @@ public class CANDriveSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     dPoseEst.update(
-        ahrs.getRotation2d(),
+        navX.getRotation2d(),
         leftLeader.getEncoder().getPosition(),
         rightLeader.getEncoder().getPosition());
+  }
+
+  @Override
+  public void simulationPeriodic() {
+    drivetrainSim.setInputs(leftSim.getAppliedOutput() * leftSim.getBusVoltage(),
+        rightSim.getAppliedOutput() * rightSim.getBusVoltage());
+    drivetrainSim.update(0.02);
   }
 
   // Command factory to create command to drive the robot with joystick inputs.
@@ -150,7 +194,7 @@ public class CANDriveSubsystem extends SubsystemBase {
 
   /** Raw gyro yaw (this may not match the field heading!). */
   public Rotation2d getGyroYaw() {
-    return ahrs.getRotation2d();
+    return navX.getRotation2d();
   }
 
 }

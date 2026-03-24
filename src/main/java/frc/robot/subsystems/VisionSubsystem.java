@@ -33,6 +33,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Robot;
 
@@ -55,6 +56,7 @@ public class VisionSubsystem extends SubsystemBase {
     // Simulation
     private PhotonCameraSim cameraSim;
     private VisionSystemSim visionSim;
+    private Field2d field=new Field2d();
 
     /**
      * @param estConsumer Lamba that will accept a pose estimate and pass it to your
@@ -90,6 +92,7 @@ public class VisionSubsystem extends SubsystemBase {
             visionSim.addCamera(cameraSim, kRobotToCam);
 
             cameraSim.enableDrawWireframe(true);
+            SmartDashboard.putData("Field", visionSim.getDebugField());
         }
     }
 
