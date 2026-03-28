@@ -19,7 +19,7 @@ public final class Autos {
         driveSubsystem.driveArcade(() -> 0.5, () -> 0).withTimeout(1),
         // Stop driving. This line uses the regular driveArcade command factory so it
         // ends immediately after commanding the motors to stop
-        driveSubsystem.driveArcade(() -> 0, () -> 0),
+        driveSubsystem.driveArcade(() -> 0, () -> 0).withTimeout(.1),
         
         // Spin up the launcher for 1 second and then launch balls for 9 seconds, for a
         // total of 10 seconds
